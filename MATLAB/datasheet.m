@@ -37,4 +37,4 @@ delta_vect = [0,1.8,2.4,6.56,9.99,14.04,17.8];
 L_vect=sqrt((V_vect./I_vect).^2 - R^2)./31.4;
 
 %% PARAMETERS %%
-Kp_I = 3000;        %Bandwidth for electrical controller
+Kp_I = 250;        %Bandwidth for electrical controller
