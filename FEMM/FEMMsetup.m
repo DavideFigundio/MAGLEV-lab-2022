@@ -15,19 +15,19 @@ saveFileName = 'Simulation.FEM';    % Sets name of the file created
 
 % Geometric parameters [cm]
 depth = 3;              % Model depth
-U_len = 9.34;           % Length of the U-bar
+U_len = 9.3;           % Length of the U-bar
 U_hig = 7.6;            % Height of the U-bar
-U_thi = 3;              % Thickness of the U-bar
-Bar_len = 9.45;         % Length of the mobile bar
-Bar_thi = 3;            % Thickness of the mobile bar
+U_thi = 2.8;              % Thickness of the U-bar
+Bar_len = 9.3;         % Length of the mobile bar
+Bar_thi = 2.8;            % Thickness of the mobile bar
 Coil_thi = 1.55;        % Thickness of the coil windings
 Coil_hig = 4.2;         % Height of the coil windings
 delta_in = 0.1;         % Initial air gap value
-BoundaryLimit = 30;     % Sets distance of boundary conditions for simulation
+BoundaryLimit = 15;     % Sets distance of boundary conditions for simulation
 
 % Material parameters
 mi_getmaterial('Air')
-mi_getmaterial('M-50')
+mi_addmaterial('Ferrite', 1850, 1850, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 mi_getmaterial('18 AWG') % Coil winding wire thickness (=~1mm)
 
 % Other parameters
@@ -93,8 +93,8 @@ mi_drawpolygon(Coil4_coords)
 
 %% BLOCK PROPERTIES %%
 
-U_label_coords = setBlockProperties(U_thi/2, U_thi/2, 'M-50', '<None>', 0, 1);     % Sets U_bar block properties
-Bar_label_coords = setBlockProperties(U_hig+Bar_thi/2+delta_in, Bar_len/2, 'M-50', '<None>', 1, 1);   % Sets the mobile bar block properties
+U_label_coords = setBlockProperties(U_thi/2, U_thi/2, 'Ferrite', '<None>', 0, 1);     % Sets U_bar block properties
+Bar_label_coords = setBlockProperties(U_hig+Bar_thi/2+delta_in, Bar_len/2, 'Ferrite', '<None>', 1, 1);   % Sets the mobile bar block properties
 Coil1_label_coords = setBlockProperties(U_hig-Coil_hig/2, -Coil_thi/2, '18 AWG', 'Coil Circuit', 0, -N);   % Sets coil properties
 Coil2_label_coords = setBlockProperties(U_hig-Coil_hig/2, U_thi+Coil_thi/2, '18 AWG', 'Coil Circuit', 0, N);
 Coil3_label_coords = setBlockProperties(U_hig-Coil_hig/2, U_len-U_thi-Coil_thi/2, '18 AWG', 'Coil Circuit', 0, N);

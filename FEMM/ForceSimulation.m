@@ -26,23 +26,30 @@ N_I = 100;
 I = linspace(Imin, Imax, N_I);
 
 %% COMPUTATION %%
-forceArray = zeros(N_delta-1, N_I);
+forceArray = zeros(N_delta, N_I);
 
-% Iteration over values of delta and I 
+% Iteration over values of delta and I
+
+for j = 1:N_I
+    forceArray(1, j) = computeForce(I(j), BarXinitial, BarY);
+end
+
 for i=2:N_delta
-    mi_selectgroup(1)
+    mi_selectgroup(1) % Group 1 corresponds to the mobile bar
     mi_movetranslate(deltas(i)-deltas(i-1), 0)
     BarX = BarXinitial + deltas(i);
 
     for j = 1:N_I
-        forceArray(i-1, j) = computeForce(I(j), BarX, BarY);
+        forceArray(i, j) = computeForce(I(j), BarX, BarY);
     end
 
 end
 
+save("results.mat","deltas", "I", "forceArray")
+
 % Resetting initial position at the end of the simulation
 mi_selectgroup(1)
-mi_movetranslate(deltas_in-deltaMax, 0)
+mi_movetranslate(delta_in-deltaMax, 0)
 mi_saveas('Simulation.FEM')
 
 function magneticForce = computeForce(I, x, y)
