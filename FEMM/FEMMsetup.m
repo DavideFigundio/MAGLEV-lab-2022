@@ -15,11 +15,11 @@ saveFileName = 'Simulation.FEM';    % Sets name of the file created
 
 % Geometric parameters [cm]
 depth = 3;              % Model depth
-U_len = 9.3;           % Length of the U-bar
+U_len = 9.3;            % Length of the U-bar
 U_hig = 7.6;            % Height of the U-bar
-U_thi = 2.8;              % Thickness of the U-bar
-Bar_len = 9.3;         % Length of the mobile bar
-Bar_thi = 2.8;            % Thickness of the mobile bar
+U_thi = 2.8;            % Thickness of the U-bar
+Bar_len = 9.3;          % Length of the mobile bar
+Bar_thi = 2.8;          % Thickness of the mobile bar
 Coil_thi = 1.55;        % Thickness of the coil windings
 Coil_hig = 4.2;         % Height of the coil windings
 delta_in = 0.1;         % Initial air gap value

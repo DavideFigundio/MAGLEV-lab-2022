@@ -1,5 +1,5 @@
 %% DATA ANALYSIS %%
-% Small script for representation of the simulation's output data.
+% Small script for representation of the force simulation's output data.
 
 clear
 clc
