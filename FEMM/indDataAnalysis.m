@@ -14,20 +14,21 @@ L_vect=sqrt((V_vect./I_vect).^2 - R^2)./31.4;
 L_sim = inductanceArray(:, 2);
 
 %{
-tiledlayout(3, 1)
-
-nexttile
-surf(I, deltas, inductanceArray)
-title("F.E.M.M. Inductance Simulation Results")
-xlabel('Current [A]')
-ylabel('Air Gap [cm]')
-zlabel("Inductance")
+tiledlayout(2, 1)
 
 nexttile
 %}
+surf(u, deltas, inductanceArray)
+title("F.E.M.M. Inductance Simulation Results")
+xlabel('Relative Permeability')
+ylabel('Air Gap [cm]')
+zlabel("Inductance [H]")
+%{
+nexttile
 plot(deltas, L_sim)
 hold on
 plot(delta_vect, L_vect)
 title("Inductance Simulation vs. Measurments")
 xlabel('Air Gap [cm]')
-ylabel('Inductance')
+ylabel('Inductance [H]')
+%}
