@@ -27,7 +27,7 @@ u = linspace(umin, umax, N_u);
 inductanceArray = zeros(N_delta, N_u);
 
 % Iteration over values of delta and I
-mi_modifycircprop('Coil Circuit', 1, 2) % Sets current to 2A
+mi_modifycircprop('Coil Circuit', 1, 2) % Sets current to 2A, but works for any values !=0
 for j = 1:N_u
     inductanceArray(1, j) = computeInductance(u(j));
 end
@@ -43,19 +43,29 @@ for i=2:N_delta
 end
 
 
-save("ind_results.mat","deltas", "u", "inductanceArray")
+save("inductanceResults.mat","deltas", "u", "inductanceArray")
 
-% Resetting initial position at the end of the simulation
+% Resetting initial conditions at the end of the simulation
 mi_selectgroup(1)
 mi_movetranslate(delta_in-deltaMax, 0)
+mi_modifymaterial('Ferrite', 1, 1850)
+mi_modifymaterial('Ferrite', 2, 1850)
 mi_saveas('Simulation.FEM')
 
 function inductance = computeInductance(u)
-    mi_modifymaterial('Ferrite', 1, u)
-    mi_modifymaterial('Ferrite', 2, u)
+% Function that computes the inductance using FEMM commands
+    
+    % Setting permeability for the ferrite
+    mi_modifymaterial('Ferrite', 1, u)  %Corresponds to mobile bar
+    mi_modifymaterial('Ferrite', 2, u)  %Corresponds to fixed electromagnet
+    
+    % Simulates and loads results
     mi_saveas('Simulation.FEM')
     mi_analyze()
     mi_loadsolution
-    mo_groupselectblock()
+    mo_groupselectblock()   % Selects all blocks since no params are specified
+
+    % Computes inductance from the magnetic field energy: L = 2*E/(I^2)
+    % Giving mo_blockintegral 2 as a parameter selects the magnetic energy
     inductance = 2*mo_blockintegral(2)/4;   % considers 2A current > I^2=4
 end

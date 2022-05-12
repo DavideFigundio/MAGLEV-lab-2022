@@ -25,7 +25,8 @@ k = u0*As*(N^2);
 formulaForceArray = zeros(N_delta, N_I);
 for i = 1:N_delta
     for j = 1:N_I
-        formulaForceArray(i, j) = 4375/13440*k*I(j)^2/(Lfe/cr + deltas(i)/100)^2;
+        formulaForceArray(i, j) = k*I(j)^2/(Lfe/cr + deltas(i)/100)^2;
+        % 4375/13440
     end
 end
 
@@ -37,48 +38,44 @@ for i = 1:N_delta
     end
 end
 
-tiledlayout(3, 2)
+tiledlayout(1, 2)
 
 nexttile
-h=gca;
 surf(I, deltas, forceArray)
-title("F.E.M.M. Simulation Results")
+title("F.E.M.M.  Force Simulation Results")
 xlabel('Current [A]')
 ylabel('Air Gap [cm]')
 zlabel("Force [N]")
-%set(h, 'zscale', 'log')
 
 nexttile
 zdiff = forceArray-equilibriumArray;
 C = contour(deltas, I, transpose(zdiff), [0 0]);
-title("Simulation Equilibrium")
+grid on
+title("Simulation Equilibria at Constant Force")
 ylabel('Current [A]')
 xlabel('Air Gap [cm]')
-% Extract the x- and y-locations from the contour matrix C.
 
+
+%{
 nexttile
-h=gca;
 surf(I, deltas, formulaForceArray)
 title("Formula Results")
 xlabel('Current [A]')
 ylabel('Air Gap [cm]')
 zlabel("Force [N]")
-%set(h, 'zscale', 'log')
 
 nexttile
-zdiff2 = formulaForceArray-equilibriumArray;
-C2 = contour(deltas, I, transpose(zdiff), [0 0]);
-title("Formula Equilibrium")
-ylabel('Current [A]')
-xlabel('Air Gap [cm]')
-% Extract the x- and y-locations from the contour matrix C.
-
-nexttile
-h=gca;
 surf(I, deltas, forceArray-formulaForceArray)
-title("Difference Between Simulation and Formula")
+title("Difference Between Models")
 xlabel('Current [A]')
 ylabel('Air Gap [cm]')
 zlabel("Force [N]")
-%set(h, 'zscale', 'log')
 
+nexttile
+zdiff2 = formulaForceArray-equilibriumArray;
+C2 = contour(deltas, I, transpose(zdiff2), [0 0]);
+grid on
+title("Formula Equilibria at Constant Force")
+ylabel('Current [A]')
+xlabel('Air Gap [cm]')
+%}

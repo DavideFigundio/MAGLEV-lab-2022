@@ -42,7 +42,7 @@ for i=2:N_delta
 
 end
 
-save("results.mat","deltas", "I", "forceArray")
+save("simulationResults.mat","deltas", "I", "forceArray")
 
 % Resetting initial position at the end of the simulation
 mi_selectgroup(1)
@@ -50,10 +50,18 @@ mi_movetranslate(delta_in-deltaMax, 0)
 mi_saveas('Simulation.FEM')
 
 function magneticForce = computeForce(I)
+% Function that computes the magnetic attraction force
+    
+    % Sets the coil current to parameter
     mi_modifycircprop('Coil Circuit', 1, I)
+    
+    % Simulates and loads the solution
     mi_saveas('Simulation.FEM')
     mi_analyze()
     mi_loadsolution
+
+    % Computes the force. 18 is the parameter corrisponding to the magnetic
+    % force.
     mo_groupselectblock(1)
     magneticForce = mo_blockintegral(18);
 end
