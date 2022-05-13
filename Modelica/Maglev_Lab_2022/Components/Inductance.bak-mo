@@ -1,0 +1,6 @@
+within Maglev_Lab_2022.Components;
+
+model Inductance
+equation
+
+end Inductance;
