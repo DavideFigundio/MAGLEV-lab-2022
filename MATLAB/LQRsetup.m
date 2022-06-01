@@ -5,20 +5,18 @@ clc
 close all
 
 %% LOADING AND PREPARATION OF DATA %%
-m = 0.83474;                                         % Mobile element mass
-eqforce = m*9.81;                                    % Equilibrium force
+m = 0.83474;                    % Mobile element mass
+eqforce = m*9.81;               % Equilibrium force
 deltaeq = 7;                    % linearization point
 d0 = 14;
 start = d0;
 
 % Data from FEMM simulations
-load('simulationResults.mat')                     % Loading simulation results
+load('simulationResults.mat')           % Loading simulation results
 forceArray = -transpose(forceArray);    % Correction of results
 deltas = 10*deltas;                     % cm->mm conversion
 N_delta = length(deltas);
 N_I = length(I);
-fParam = 0.2;                          % Hypothesized friction/gravity ratio
-frictionForce = eqforce*fParam;
 
 %% SIMULATED EQUILIBRIUM VALUES %%
 
@@ -44,7 +42,7 @@ C = [1, 0];
 D = 0;
 sys = ss(A, B, C, D);
 
-Q = diag([10, 0.1, 1]);
+Q = diag([10, 0.1, 10]);
 R = 1;
 
 K = lqi(sys, Q, R);
