@@ -28,8 +28,8 @@ N_I = length(I);
 sim_eq = contourc(deltas, I, forceArray, [eqforce, eqforce]);
 gc = polyfit(sim_eq(1, 2:N_I), sim_eq(2, 2:N_I), 1);
 
-%mG= gc(1);
-%qG = gc(2);
+mG= gc(1);
+qG = gc(2);
 
 % Parameter computation
 k1=4*eqforce/(mG^2);

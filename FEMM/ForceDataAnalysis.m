@@ -5,23 +5,27 @@ clear
 clc
 close all
 
-load('results.mat')
+%% MEASURED VALUES %%
+
+% Simulation results
+load('simulationResults.mat')
 forceArray = -forceArray(:, :);
 N_delta = length(deltas);
 N_I = length(I);
 
-m = 0.83474;
+% Other parameters
+m = 0.83474;                                % mass
+Lfe = 0.048*2 + 2*(0.093-0.028) + 2*0.028;  % ferrite length
+N = 860;                                    % No of spires
+Lb = 0.028;                                 % Height of section
+Pb = 0.028;                                 % Depth of section
+cr = 1850;                                  % ferrite rel. permeability
+u0 = 4*pi*10^(-7);                          % vacuum permeability
 
-Lfe = 0.048*2 + 2*(0.093-0.028) + 2*0.028;
-N = 860;
-Lb = 0.028;
-Pb = 0.028;
-cr = 1850;
-u0 = 4*pi*10^(-7);
+%% THEORETICAL FORCE COMPUTATION %%
 
-As = Lb*Pb;
+As = Lb*Pb;         % section area
 k = u0*As*(N^2);
-
 formulaForceArray = zeros(N_delta, N_I);
 for i = 1:N_delta
     for j = 1:N_I
@@ -30,36 +34,20 @@ for i = 1:N_delta
     end
 end
 
-eqforce = m*9.81;
-equilibriumArray = zeros(N_delta, N_I);
-for i = 1:N_delta
-    for j = 1:N_I
-        equilibriumArray(i, j) = eqforce;
-    end
-end
+%% PLOTTING %%
 
-tiledlayout(1, 2)
+tiledlayout(2, 2)
 
 nexttile
 surf(I, deltas, forceArray)
-title("F.E.M.M.  Force Simulation Results")
+title("F.E.M.M.  Force Simulation Plot")
 xlabel('Current [A]')
 ylabel('Air Gap [cm]')
 zlabel("Force [N]")
 
 nexttile
-zdiff = forceArray-equilibriumArray;
-C = contour(deltas, I, transpose(zdiff), [0 0]);
-grid on
-title("Simulation Equilibria at Constant Force")
-ylabel('Current [A]')
-xlabel('Air Gap [cm]')
-
-
-%{
-nexttile
 surf(I, deltas, formulaForceArray)
-title("Formula Results")
+title("Magnetic Circuit Formula Plot")
 xlabel('Current [A]')
 ylabel('Air Gap [cm]')
 zlabel("Force [N]")
@@ -72,10 +60,9 @@ ylabel('Air Gap [cm]')
 zlabel("Force [N]")
 
 nexttile
-zdiff2 = formulaForceArray-equilibriumArray;
-C2 = contour(deltas, I, transpose(zdiff2), [0 0]);
-grid on
-title("Formula Equilibria at Constant Force")
-ylabel('Current [A]')
-xlabel('Air Gap [cm]')
-%}
+surf(I, deltas, formulaForceArray./forceArray)
+title("Ratio Between Models")
+xlabel('Current [A]')
+ylabel('Air Gap [cm]')
+zlabel("Force Ratio")
+
